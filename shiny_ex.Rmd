@@ -1,0 +1,26 @@
+---
+title: "Regression splines"
+author: "Carmen Aguilera"
+date: "14/3/2019"
+output: html_document
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Regression splines
+
+```{r, echo=FALSE,message=FALSE}
+library(fds)
+library(fda)
+sliderInput("basis", "Number of basis functions:", 30, min = 5, max = 30)
+
+renderPlot({
+t <- nirc$x # Observation points: (t1,..., t700)
+Bspline_basis <- create.bspline.basis(rangeval=c(min(t),max(t)), nbasis=input$basis) 
+data_fd <- Data2fd(y=nirc$y, argvals=t, basisobj=Bspline_basis) 
+plot(data_fd, xlab="nm", ylab="NIR spectra",col=1,lty=1)
+})
+```
